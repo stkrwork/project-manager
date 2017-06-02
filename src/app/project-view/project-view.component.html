@@ -1,0 +1,103 @@
+<div class="w3-container w3-blue w3-bar">
+  <h1>Project-Tracker</h1>
+</div>
+<div class="w3-container w3-margin">
+  <div *ngIf="projects">
+    <input type="checkbox" class="w3-check" [(ngModel)]="hideCompleted"><label>Hide Completed</label><br />
+
+    <table class="w3-table w3-bordered w3-border">
+      <ng-template ngFor let-project [ngForOf]="projects">
+        <tr>
+          <th (click)="project.dataShown = !project.dataShown" class="w3-button w3-block w3-left-align w3-black w3-text-white" colspan="4">
+            {{project.projectName}}
+            <!-- Archive project -->
+            <a href="#/projects" class="w3-right w3-text-yellow fa fa-archive"></a>
+
+            <a href="#/projects" class="w3-right w3-text-red w3-margin-right fa fa-trash" (click)="prepareProjectDeletion(project, checkProjectDeletionModal)"></a>
+            <a href="#/projects" class="w3-right w3-text-green w3-margin-right fa fa-gear" (click)="editProject(project, editProjectModal)"></a>
+          </th>
+        </tr>
+        <tr class="w3-light-grey" *ngIf="project.dataShown">
+          <th>Task Name</th>
+          <th>Task Status</th>
+          <th colspan="2">Due Date</th>
+        </tr>
+        <ng-template [ngIf]="project.dataShown">
+          <ng-template ngFor let-task [ngForOf]="project.tasks">
+            <ng-template [ngIf]="!task.isArchived && !(hideCompleted && (task.status === 'Done'))">
+              <tr appTaskHighlighter [date]="task.dueDate" [status]="task.status">
+                <td>{{task.name}}</td>
+                <td>{{task.status | statusFormatter}}</td>
+                <td>{{task.dueDate | date:"dd/MM/y"}}</td>
+                <td class="w3-right-align">
+                  <a href="#/projects" class="w3-hoverable w3-text-green w3-margin-right fa-gear" (click)="editTask(task, editTaskModal)"></a>
+                  <a href="#/projects" class="w3-hoverable w3-text-dark-grey w3-margin-right fa-trash" (click)="prepareTaskDeletion(task, project, checkTaskDeletionModal)"></a>
+                  <!-- Archive task -->
+                  <a href="#/projects" class="w3-hoverable w3-text-yellow fa-archive" (click)="archiveTask(task)"></a>
+                </td>
+              </tr>
+            </ng-template>
+          </ng-template>
+        </ng-template>
+        <ng-template [ngIf]="project.dataShown">
+          <tr (click)="createTask(createTaskModal, project.tasks.length, project)">
+            <td class="w3-button w3-border-right" colspan="4"><b class="w3-text-green fa fa-plus"></b> Add Task</td>
+          </tr>
+        </ng-template>
+      </ng-template>
+    </table>
+  </div>
+  <span (click)="createProject(createProjectModal, projects.length)" class="w3-button w3-block w3-left-align w3-dark-grey w3-text-white">
+                <a class="w3-text-white"><b class="w3-text-green fa fa-plus"></b> Add Project</a>
+  </span>
+</div>
+
+<div #checkTaskDeletionModal class="w3-modal">
+  <div class="w3-modal-content w3-center w3-padding" *ngIf="taskToDelete">
+    Do you really want to delete this task, called {{taskToDelete.name}} from {{projectToDelete.projectName}}? <br />
+    <button class="w3-button w3-red" (click)="deleteTask(checkTaskDeletionModal)">
+      Yes
+    </button> <button class="w3-button w3-black" (click)="closeWindow(checkTaskDeletionModal)">
+      No
+    </button>
+  </div>
+</div>
+
+<div #checkProjectDeletionModal class="w3-modal">
+  <div class="w3-modal-content w3-center w3-padding" *ngIf="projectToDelete">
+    Do you really want to delete this project, called {{projectToDelete.projectName}}? <br />
+    <button class="w3-button w3-red" (click)="deleteProject(checkProjectDeletionModal)">
+      Yes
+    </button> <button class="w3-button w3-black" (click)="closeWindow(checkProjectDeletionModal)">
+      No
+    </button>
+  </div>
+</div>
+
+<div #editTaskModal class="w3-modal">
+  <div class="w3-modal-content">
+    <span (click)="closeTaskEditor(editTaskModal)" class="w3-button w3-display-topright fa fa-close"></span>
+    <app-task-editor *ngIf="selectedTask" [task]="selectedTask"></app-task-editor>
+  </div>
+</div>
+
+<div #createTaskModal class="w3-modal">
+  <div class="w3-modal-content">
+    <span (click)="closeWindow(createTaskModal)" class="w3-button w3-display-topright fa fa-close"></span>
+    <app-create-task (taskReady)="onTaskCreationComplete(createTaskModal,$event, selectedProject.id)"></app-create-task>
+  </div>
+</div>
+
+<div #editProjectModal class="w3-modal">
+  <div class="w3-modal-content">
+    <span (click)="closeProjectEditor(editProjectModal)" class="w3-button w3-display-topright fa fa-close"></span>
+    <app-edit-project *ngIf="selectedProject" [project]="selectedProject"></app-edit-project>
+  </div>
+</div>
+
+<div #createProjectModal class="w3-modal">
+  <div class="w3-modal-content">
+    <span (click)="closeWindow(createProjectModal)" class="w3-button w3-display-topright fa fa-close"></span>
+    <app-create-project (projectReady)="onProjectCreationComplete(createProjectModal,$event)"></app-create-project>
+  </div>
+</div>

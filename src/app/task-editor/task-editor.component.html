@@ -1,0 +1,12 @@
+<div class="w3-container w3-margin w3-padding">
+	<div *ngIf="task">
+		<label>Name:</label> 
+		<input class="w3-input" type="text" [(ngModel)]="task.name" />
+        <label>Status:</label>
+        <select class="w3-select" [(ngModel)]="task.status">
+            <option *ngFor="let status of statii" [ngValue]="status.name">{{status.name}}</option>
+        </select><br />
+        <label>Due Date:</label> 
+        <input class="w3-input" type="date" [(ngModel)]="task.dueDate" />
+	</div>
+</div>

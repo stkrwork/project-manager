@@ -1,0 +1,7 @@
+<div class="w3-container w3-margin w3-padding">
+    <div *ngIf="project">
+        <label>Name:</label> 
+        <input class="w3-input" type="text" [(ngModel)]="project.projectName" />
+    </div>
+    <button class="w3-button" (click)="createProject()">Create</button>
+</div>
