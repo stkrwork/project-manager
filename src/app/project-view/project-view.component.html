@@ -27,13 +27,13 @@
             <ng-template [ngIf]="!task.isArchived && !(hideCompleted && (task.status === 'Done'))">
               <tr appTaskHighlighter [date]="task.dueDate" [status]="task.status">
                 <td>{{task.name}}</td>
-                <td>{{task.status | statusFormatter}}</td>
+                <td class="fa" appStatusIcon [iconName]="task.status"></td>
                 <td>{{task.dueDate | date:"dd/MM/y"}}</td>
                 <td class="w3-right-align">
-                  <a href="#/projects" class="w3-hoverable w3-text-green w3-margin-right fa-gear" (click)="editTask(task, editTaskModal)"></a>
-                  <a href="#/projects" class="w3-hoverable w3-text-dark-grey w3-margin-right fa-trash" (click)="prepareTaskDeletion(task, project, checkTaskDeletionModal)"></a>
+                  <a href="#/projects" class="w3-hoverable w3-text-green w3-margin-right fa fa-gear" (click)="editTask(task, editTaskModal)"></a>
+                  <a href="#/projects" class="w3-hoverable w3-text-dark-grey w3-margin-right fa fa-trash" (click)="prepareTaskDeletion(task, project, checkTaskDeletionModal)"></a>
                   <!-- Archive task -->
-                  <a href="#/projects" class="w3-hoverable w3-text-yellow fa-archive" (click)="archiveTask(task)"></a>
+                  <a href="#/projects" class="w3-hoverable w3-text-yellow fa fa-archive" (click)="archiveTask(task)"></a>
                 </td>
               </tr>
             </ng-template>
@@ -47,7 +47,7 @@
       </ng-template>
     </table>
   </div>
-  <span (click)="createProject(createProjectModal, projects.length)" class="w3-button w3-block w3-left-align w3-dark-grey w3-text-white">
+  <span (click)="createProject(createProjectModal, ((projects) ? projects.length : 0))" class="w3-button w3-block w3-left-align w3-dark-grey w3-text-white">
                 <a class="w3-text-white"><b class="w3-text-green fa fa-plus"></b> Add Project</a>
   </span>
 </div>

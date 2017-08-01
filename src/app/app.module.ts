@@ -14,6 +14,7 @@ import { StatusFormatterPipe } from './status-formatter.pipe';
 import { EditProjectComponent } from './edit-project/edit-project.component';
 import { TaskHighlighterDirective } from './task-highlighter.directive';
 import { ArchiveViewComponent } from './archive-view/archive-view.component';
+import { StatusIconDirective } from './status-icon.directive';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ArchiveViewComponent } from './archive-view/archive-view.component';
     StatusFormatterPipe,
     EditProjectComponent,
     TaskHighlighterDirective,
-    ArchiveViewComponent
+    ArchiveViewComponent,
+    StatusIconDirective
   ],
   imports: [
     BrowserModule,

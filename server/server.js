@@ -2,19 +2,24 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var bodyParser = require('body-parser');
+var pathToProjectsFile =  __dirname + "/" + "projects.json";
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.use(express.static('htmljs'));
 
 app.get('/loadProjects', function (req, res) {
-   fs.readFile( __dirname + "/" + "projects.json", 'utf8', function (err, data) {
+  if (fs.existsSync(pathToProjectsFile)) {
+    fs.readFile(pathToProjectsFile, 'utf8', function (err, data) {
        res.end( data );
    });
+  } else {
+    res.end("[]");
+  }
 })
 
 app.post('/saveProjects', function (req, res) {
-   fs.writeFile( __dirname + "/" + "projects.json", JSON.stringify(req.body), 'utf8', function (err) {
+   fs.writeFile(pathToProjectsFile, JSON.stringify(req.body), 'utf8', function (err) {
        if (err) {
          res.end("Error");
        } else {
