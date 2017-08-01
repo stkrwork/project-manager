@@ -1,1 +1,23 @@
+dist/
 node_modules/
+projects.json
+npm-debug.log*
+yarn-error.log*
+.project
+.settings/
+htmljs/
+
+# IDEs
+.idea/
+jsconfig.json
+.vscode/
+
+# Typings file.
+typings/
+
+# Misc
+tmp/
+
+# Mac OSX Finder files.
+**/.DS_Store
+.DS_Store
